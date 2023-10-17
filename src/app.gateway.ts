@@ -12,7 +12,8 @@ export class ChatGateway {
 
     @SubscribeMessage('message') // message 이벤트 구독
     handleMessage(socket: Socket, data: any): void {
-        // 접속한 클라이언트들에 메시지 전송 
-        this.server.emit('message', `client-${socket.id.substring(0,4)} : ${data}`,);
+        const { message, nickname } = data; // 메시지와 닉네임을 데이터에서 추출
+        // 닉네임을 포함한 메시지 전송
+        socket.broadcast.emit('message', `${nickname}: ${message}`);
     }
 }
